@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JanSuvidha - Government Schemes Portal</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <i class="fas fa-hands-helping"></i>
+                <h1>JanSuvidha</h1>
+                <span class="tagline">Your Gateway to Government Schemes</span>
+            </div>
+            <div class="nav-links">
+                <a href="#" class="active" id="navDashboard"><i class="fas fa-home"></i> Dashboard</a>
+                <a href="#" id="navSaved"><i class="fas fa-bookmark"></i> Saved <span class="badge" id="savedCount">0</span></a>
+                <a href="#" id="navAlerts"><i class="fas fa-bell"></i> Alerts <span class="badge" id="alertCount">5</span></a>
+                <a href="#" id="navApplications"><i class="fas fa-file-alt"></i> Applications</a>
+                <div class="user-profile" id="userProfile">
+                    <img src="https://ui-avatars.com/api/?name=Indian+Citizen&background=4A6FA5&color=fff" alt="User">
+                    <div class="profile-info">
+                        <span id="userName">Indian Citizen</span>
+                        <small id="userType">General Profile</small>
+                    </div>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+            </div>
+            <button class="mobile-menu-btn">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Profile Selection Modal -->
+    <div id="profileModal" class="modal">
+        <div class="modal-content profile-modal">
+            <div class="modal-header">
+                <h2><i class="fas fa-user-circle"></i> Select Your Profile</h2>
+                <span class="close-modal">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="profile-options">
+                    <div class="profile-option" data-profile="student">
+                        <i class="fas fa-graduation-cap"></i>
+                        <h3>Student</h3>
+                        <p>Scholarships, education loans, skill development</p>
+                    </div>
+                    <div class="profile-option" data-profile="senior">
+                        <i class="fas fa-user-clock"></i>
+                        <h3>Senior Citizen</h3>
+                        <p>Pension, healthcare, assisted living</p>
+                    </div>
+                    <div class="profile-option" data-profile="farmer">
+                        <i class="fas fa-tractor"></i>
+                        <h3>Farmer</h3>
+                        <p>Subsidies, insurance, agricultural schemes</p>
+                    </div>
+                    <div class="profile-option" data-profile="women">
+                        <i class="fas fa-female"></i>
+                        <h3>Women</h3>
+                        <p>Empowerment, maternity, entrepreneurship</p>
+                    </div>
+                    <div class="profile-option" data-profile="entrepreneur">
+                        <i class="fas fa-lightbulb"></i>
+                        <h3>Entrepreneur</h3>
+                        <p>Startup funding, business loans</p>
+                    </div>
+                    <div class="profile-option" data-profile="business">
+                        <i class="fas fa-briefcase"></i>
+                        <h3>Small Business</h3>
+                        <p>MSME schemes, subsidies</p>
+                    </div>
+                </div>
+                <div class="current-profile">
+                    <h3><i class="fas fa-info-circle"></i> Current Profile: <span id="currentProfileText">Student</span></h3>
+                    <button class="modal-btn" id="confirmProfile">
+                        <i class="fas fa-check"></i> Continue with Selected Profile
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Dashboard Layout -->
+    <div class="dashboard-container">
+        <!-- Sidebar Filters -->
+        <aside class="sidebar">
+            <div class="filter-section">
+                <h3><i class="fas fa-sliders-h"></i> Filters</h3>
+                
+                <div class="filter-group">
+                    <label><i class="fas fa-user-tag"></i> Profile Type</label>
+                    <div class="profile-buttons">
+                        <button class="profile-btn active" data-profile="all">All</button>
+                        <button class="profile-btn" data-profile="student"><i class="fas fa-graduation-cap"></i> Student</button>
+                        <button class="profile-btn" data-profile="senior"><i class="fas fa-user-clock"></i> Senior</button>
+                        <button class="profile-btn" data-profile="farmer"><i class="fas fa-tractor"></i> Farmer</button>
+                        <button class="profile-btn" data-profile="women"><i class="fas fa-female"></i> Women</button>
+                    </div>
+                </div>
+                
+                <div class="filter-group">
+                    <label><i class="fas fa-map-marker-alt"></i> Location</label>
+                    <select id="locationFilter">
+                        <option value="all">All India</option>
+                        <option value="maharashtra">Maharashtra</option>
+                        <option value="delhi">Delhi</option>
+                        <option value="karnataka">Karnataka</option>
+                        <option value="tamilnadu">Tamil Nadu</option>
+                        <option value="punjab">Punjab</option>
+                        <option value="gujarat">Gujarat</option>
+                        <option value="rajasthan">Rajasthan</option>
+                        <option value="up">Uttar Pradesh</option>
+                        <option value="westbengal">West Bengal</option>
+                        <option value="telangana">Telangana</option>
+                        <option value="andhra">Andhra Pradesh</option>
+                        <option value="kerala">Kerala</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label><i class="fas fa-rupee-sign"></i> Family Income (Annual)</label>
+                    <div class="income-slider">
+                        <input type="range" id="incomeRange" min="0" max="1000000" value="800000" step="50000">
+                        <div class="income-value">
+                            <span id="incomeValue">₹8,00,000</span>
+                            <span class="income-label">or less</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="filter-group">
+                    <label><i class="fas fa-list-alt"></i> Scheme Category</label>
+                    <div class="category-options">
+                        <label class="category-checkbox">
+                            <input type="checkbox" value="scholarship" checked> Scholarships
+                        </label>
+                        <label class="category-checkbox">
+                            <input type="checkbox" value="pension" checked> Pension
+                        </label>
+                        <label class="category-checkbox">
+                            <input type="checkbox" value="agriculture" checked> Agriculture
+                        </label>
+                        <label class="category-checkbox">
+                            <input type="checkbox" value="women" checked> Women Welfare
+                        </label>
+                        <label class="category-checkbox">
+                            <input type="checkbox" value="health" checked> Health
+                        </label>
+                        <label class="category-checkbox">
+                            <input type="checkbox" value="housing" checked> Housing
+                        </label>
+                        <label class="category-checkbox">
+                            <input type="checkbox" value="employment" checked> Employment
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="filter-group">
+                    <label><i class="fas fa-calendar"></i> Application Status</label>
+                    <div class="status-options">
+                        <label class="status-radio">
+                            <input type="radio" name="status" value="all" checked> All Schemes
+                        </label>
+                        <label class="status-radio">
+                            <input type="radio" name="status" value="open"> Open for Application
+                        </label>
+                        <label class="status-radio">
+                            <input type="radio" name="status" value="ongoing"> Ongoing Schemes
+                        </label>
+                        <label class="status-radio">
+                            <input type="radio" name="status" value="upcoming"> Upcoming Deadlines
+                        </label>
+                    </div>
+                </div>
+                
+                <button id="applyFilters" class="apply-btn">
+                    <i class="fas fa-filter"></i> Apply Filters
+                </button>
+                <button id="resetFilters" class="reset-btn">
+                    <i class="fas fa-redo"></i> Reset All
+                </button>
+            </div>
+            
+            <!-- Quick Stats Section -->
+            <div class="stats-section">
+                <h3><i class="fas fa-chart-line"></i> Quick Stats</h3>
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <i class="fas fa-graduation-cap"></i>
+                        <div>
+                            <h4 id="studentSchemes">0</h4>
+                            <p>Student Schemes</p>
+                        </div>
+                    </div>
+                    <div class="stat-item">
+                        <i class="fas fa-user-clock"></i>
+                        <div>
+                            <h4 id="seniorSchemes">0</h4>
+                            <p>Senior Schemes</p>
+                        </div>
+                    </div>
+                    <div class="stat-item">
+                        <i class="fas fa-tractor"></i>
+                        <div>
+                            <h4 id="farmerSchemes">0</h4>
+                            <p>Farmer Schemes</p>
+                        </div>
+                    </div>
+                    <div class="stat-item">
+                        <i class="fas fa-female"></i>
+                        <div>
+                            <h4 id="womenSchemes">0</h4>
+                            <p>Women Schemes</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Quick Links -->
+            <div class="quick-links-section">
+                <h3><i class="fas fa-external-link-alt"></i> Quick Links</h3>
+                <a href="https://scholarships.gov.in" target="_blank" class="quick-link">
+                    <i class="fas fa-university"></i> National Scholarship Portal
+                </a>
+                <a href="https://pmkisan.gov.in" target="_blank" class="quick-link">
+                    <i class="fas fa-seedling"></i> PM Kisan Portal
+                </a>
+                <a href="https://npscra.nsdl.co.in" target="_blank" class="quick-link">
+                    <i class="fas fa-piggy-bank"></i> National Pension System
+                </a>
+                <a href="https://swayamprabha.gov.in" target="_blank" class="quick-link">
+                    <i class="fas fa-chalkboard-teacher"></i> Skill Development
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Welcome Header -->
+            <header class="dashboard-header">
+                <div class="welcome-message">
+                    <div class="welcome-header">
+                        <h2 id="welcomeText">Welcome to JanSuvidha!</h2>
+                        <button class="change-profile-btn" id="changeProfileBtn">
+                            <i class="fas fa-sync-alt"></i> Change Profile
+                        </button>
+                    </div>
+                    <p id="locationText">Discover government schemes tailored for you across India</p>
+                    <div class="current-filters">
+                        <span class="filter-tag active-profile">
+                            <i class="fas fa-user"></i> <span id="activeProfile">Student</span>
+                        </span>
+                        <span class="filter-tag">
+                            <i class="fas fa-map-marker-alt"></i> <span id="activeLocation">All India</span>
+                        </span>
+                        <span class="filter-tag">
+                            <i class="fas fa-rupee-sign"></i> <span id="activeIncome">Up to ₹8L</span>
+                        </span>
+                    </div>
+                </div>
+                <div class="header-actions">
+                    <button class="header-action-btn" id="checkEligibility">
+                        <i class="fas fa-check-circle"></i> Check Eligibility
+                    </button>
+                    <button class="header-action-btn" id="downloadReport">
+                        <i class="fas fa-download"></i> Download Report
+                    </button>
+                </div>
+            </header>
+
+            <!-- Search Bar -->
+            <div class="search-container">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchInput" placeholder="Search by scheme name, benefits, or keywords...">
+                    <button id="clearSearch" class="clear-search-btn">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="search-actions">
+                    <div class="view-toggle">
+                        <button class="view-btn active" id="gridView"><i class="fas fa-th-large"></i> Grid</button>
+                        <button class="view-btn" id="listView"><i class="fas fa-list"></i> List</button>
+                    </div>
+                    <button class="search-advanced-btn" id="advancedSearchBtn">
+                        <i class="fas fa-cog"></i> Advanced
+                    </button>
+                </div>
+            </div>
+
+            <!-- Scheme Count & Sort -->
+            <div class="scheme-controls">
+                <div class="scheme-count">
+                    <h3><span id="totalSchemes">0</span> Schemes Found</h3>
+                    <p>Matching your criteria</p>
+                </div>
+                <div class="sort-options">
+                    <label>Sort by:</label>
+                    <select id="sortBy">
+                        <option value="relevance">Relevance</option>
+                        <option value="deadline">Deadline (Soonest)</option>
+                        <option value="benefits">Benefits (Highest)</option>
+                        <option value="popularity">Popularity</option>
+                        <option value="newest">Newest First</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Scheme Cards Container -->
+            <div class="schemes-container" id="schemesContainer">
+                <!-- Scheme cards will be dynamically inserted here -->
+            </div>
+
+            <!-- Pagination -->
+            <div class="pagination" id="pagination">
+                <!-- Pagination buttons will be dynamically inserted here -->
+            </div>
+
+            <!-- Quick Action Buttons -->
+            <div class="quick-actions">
+                <h3><i class="fas fa-bolt"></i> Quick Actions</h3>
+                <div class="action-buttons">
+                    <button class="action-btn" id="documentChecklist">
+                        <i class="fas fa-file-contract"></i>
+                        <span>Document Checklist</span>
+                    </button>
+                    <button class="action-btn" id="deadlineTracker">
+                        <i class="fas fa-calendar-check"></i>
+                        <span>Deadline Tracker</span>
+                    </button>
+                    <button class="action-btn" id="eligibilityCalculator">
+                        <i class="fas fa-calculator"></i>
+                        <span>Eligibility Calculator</span>
+                    </button>
+                    <button class="action-btn" id="applyInBulk">
+                        <i class="fas fa-paper-plane"></i>
+                        <span>Bulk Apply</span>
+                    </button>
+                    <button class="action-btn" id="compareSchemes">
+                        <i class="fas fa-balance-scale"></i>
+                        <span>Compare Schemes</span>
+                    </button>
+                    <button class="action-btn" id="helpDesk">
+                        <i class="fas fa-headset"></i>
+                        <span>Help Desk</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Recent Updates -->
+            <div class="updates-section">
+                <h3><i class="fas fa-newspaper"></i> Recent Updates</h3>
+                <div class="updates-container">
+                    <div class="update-card new">
+                        <div class="update-badge">NEW</div>
+                        <h4>PM Kisan 16th Installment</h4>
+                        <p>₹2,000 installment released. Check your account status.</p>
+                        <span class="update-date">Feb 28, 2024</span>
+                    </div>
+                    <div class="update-card">
+                        <h4>Scholarship Deadline Extended</h4>
+                        <p>National Scholarship Portal deadline extended to March 31.</p>
+                        <span class="update-date">Feb 25, 2024</span>
+                    </div>
+                    <div class="update-card">
+                        <h4>New Health Scheme Launched</h4>
+                        <p>Ayushman Bharat expansion covers more beneficiaries.</p>
+                        <span class="update-date">Feb 20, 2024</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Notification Area -->
+            <div id="notificationArea" class="notification-area"></div>
+        </main>
+    </div>
+
+    <!-- Scheme Details Modal -->
+    <div id="schemeModal" class="modal">
+        <div class="modal-content scheme-modal">
+            <div class="modal-header">
+                <div class="scheme-modal-header">
+                    <div class="scheme-icon-modal" id="modalIcon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <div>
+                        <h2 id="modalSchemeName">Scheme Name</h2>
+                        <div class="scheme-tags" id="modalTags"></div>
+                    </div>
+                </div>
+                <span class="close-modal">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="modal-tabs">
+                    <button class="modal-tab active" data-tab="overview">Overview</button>
+                    <button class="modal-tab" data-tab="eligibility">Eligibility</button>
+                    <button class="modal-tab" data-tab="documents">Documents</button>
+                    <button class="modal-tab" data-tab="benefits">Benefits</button>
+                    <button class="modal-tab" data-tab="apply">How to Apply</button>
+                </div>
+                
+                <div class="modal-tab-content active" id="overviewTab">
+                    <h3><i class="fas fa-info-circle"></i> Scheme Details</h3>
+                    <p id="modalDescription"></p>
+                    <div class="scheme-highlights">
+                        <div class="highlight">
+                            <i class="fas fa-rupee-sign"></i>
+                            <div>
+                                <span>Benefit Amount</span>
+                                <strong id="modalBenefitAmount"></strong>
+                            </div>
+                        </div>
+                        <div class="highlight">
+                            <i class="fas fa-calendar"></i>
+                            <div>
+                                <span>Deadline</span>
+                                <strong id="modalDeadline"></strong>
+                            </div>
+                        </div>
+                        <div class="highlight">
+                            <i class="fas fa-users"></i>
+                            <div>
+                                <span>Eligible For</span>
+                                <strong id="modalEligibleFor"></strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="modal-tab-content" id="eligibilityTab">
+                    <h3><i class="fas fa-user-check"></i> Eligibility Criteria</h3>
+                    <ul id="modalEligibilityList"></ul>
+                    <div class="eligibility-checker">
+                        <h4><i class="fas fa-calculator"></i> Check Your Eligibility</h4>
+                        <div class="eligibility-inputs">
+                            <input type="number" id="incomeInput" placeholder="Annual Family Income">
+                            <input type="text" id="categoryInput" placeholder="Category (SC/ST/OBC/General)">
+                            <button class="small-btn" id="checkEligibilityBtn">Check Now</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="modal-tab-content" id="documentsTab">
+                    <h3><i class="fas fa-file-lines"></i> Required Documents</h3>
+                    <ul id="modalDocumentsList"></ul>
+                    <div class="document-tips">
+                        <h4><i class="fas fa-lightbulb"></i> Tips for Document Preparation</h4>
+                        <ul>
+                            <li>All documents should be clear and legible</li>
+                            <li>Keep scanned copies in PDF format</li>
+                            <li>Ensure Aadhaar is linked with bank account</li>
+                            <li>Income certificates should not be older than 6 months</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="modal-tab-content" id="benefitsTab">
+                    <h3><i class="fas fa-gift"></i> Benefits & Features</h3>
+                    <div id="modalBenefitsList"></div>
+                    <div class="benefit-calculator">
+                        <h4><i class="fas fa-calculator"></i> Benefit Calculator</h4>
+                        <div class="calculator-inputs">
+                            <input type="number" id="calculatorInput" placeholder="Enter relevant value">
+                            <button class="small-btn" id="calculateBenefits">Calculate</button>
+                        </div>
+                        <div class="calculator-result" id="calculatorResult"></div>
+                    </div>
+                </div>
+                
+                <div class="modal-tab-content" id="applyTab">
+                    <h3><i class="fas fa-paper-plane"></i> Application Process</h3>
+                    <div id="modalApplySteps"></div>
+                    <div class="application-links">
+                        <h4><i class="fas fa-link"></i> Important Links</h4>
+                        <a href="#" id="officialPortalLink" target="_blank" class="portal-link">
+                            <i class="fas fa-external-link-alt"></i> Official Portal
+                        </a>
+                        <a href="#" id="applicationFormLink" target="_blank" class="portal-link">
+                            <i class="fas fa-file-download"></i> Download Form
+                        </a>
+                        <a href="#" id="helplineLink" class="portal-link">
+                            <i class="fas fa-phone"></i> Helpline Number
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-btn secondary" id="printModal">
+                    <i class="fas fa-print"></i> Print Details
+                </button>
+                <button class="modal-btn secondary" id="shareModal">
+                    <i class="fas fa-share-alt"></i> Share
+                </button>
+                <button class="modal-btn" id="saveModal">
+                    <i class="fas fa-bookmark"></i> Save Scheme
+                </button>
+                <button class="modal-btn primary" id="applyNowModal">
+                    <i class="fas fa-rocket"></i> Apply Now
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Compare Schemes Modal -->
+    <div id="compareModal" class="modal">
+        <div class="modal-content compare-modal">
+            <div class="modal-header">
+                <h2><i class="fas fa-balance-scale"></i> Compare Schemes</h2>
+                <span class="close-modal">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="compare-grid" id="compareGrid">
+                    <!-- Comparison will be dynamically inserted here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4><i class="fas fa-hands-helping"></i> JanSuvidha</h4>
+                <p>Your comprehensive portal for government schemes and benefits</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <a href="#" id="footerHome">Home</a>
+                <a href="#" id="footerSchemes">All Schemes</a>
+                <a href="#" id="footerApplications">My Applications</a>
+                <a href="#" id="footerHelp">Help Center</a>
+            </div>
+            <div class="footer-section">
+                <h4>Government Portals</h4>
+                <a href="https://india.gov.in" target="_blank">National Portal of India</a>
+                <a href="https://dbtbharat.gov.in" target="_blank">DBT Bharat</a>
+                <a href="https://mygov.in" target="_blank">MyGov</a>
+                <a href="https://umang.gov.in" target="_blank">UMANG App</a>
+            </div>
+            <div class="footer-section">
+                <h4>Contact & Support</h4>
+                <p><i class="fas fa-phone"></i> National Helpline: 1800-11-0001</p>
+                <p><i class="fas fa-envelope"></i> support@jansuvidha.gov.in</p>
+                <p><i class="fas fa-map-marker-alt"></i> Ministry of Electronics & IT, New Delhi</p>
+                <button class="footer-btn" id="feedbackBtn">
+                    <i class="fas fa-comment"></i> Give Feedback
+                </button>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>JanSuvidha is an initiative to bridge the gap between citizens and government schemes</p>
+            <div class="footer-links">
+                <a href="#" id="footerPrivacy">Privacy Policy</a>
+                <a href="#" id="footerTerms">Terms of Service</a>
+                <a href="#" id="footerAccessibility">Accessibility</a>
+                <a href="#" id="footerSitemap">Sitemap</a>
+            </div>
+            <p class="footer-note">© 2024 JanSuvidha. Data sourced from official government portals. Last updated: March 2024</p>
+        </div>
+    </footer>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay">
+        <div class="loading-spinner">
+            <i class="fas fa-spinner fa-spin"></i>
+            <p>Loading schemes...</p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
